@@ -1,0 +1,25 @@
+[user]
+    name = José Miguel Morillo
+    email = josemiguel.morillo@icloud.com
+
+[core]
+    editor = vim
+
+[alias]
+    # Check current profile
+    whoami = "!git config --show-origin user.name && git config --show-origin user.email"
+
+    # Quality-of-life aliases
+    st = status
+    ci = commit
+    co = checkout
+    br = branch
+    lg = log --oneline --graph --decorate --all
+    last = log -1 HEAD
+
+[includeIf "gitdir:~/Documents/clients/tifin/"]
+	path = ~/Documents/clients/tifin/.gitconfig-tifin
+
+[includeIf "gitdir:~/Documents/clients/criterian/"]
+    path = ~/Documents/clients/criterian/.gitconfig-criterian
+
