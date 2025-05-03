@@ -8,6 +8,9 @@
 [alias]
     # Check current profile
     whoami = "!git config --show-origin user.name && git config --show-origin user.email"
+    orphan = "!git branch -vv | awk '/: gone]/{print $1}'"
+    cleanup = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -d"
+
 
     # Quality-of-life aliases
     st = status
@@ -17,9 +20,9 @@
     lg = log --oneline --graph --decorate --all
     last = log -1 HEAD
 
-[includeIf "gitdir:~/Documents/clients/tifin/"]
-	path = ~/Documents/clients/tifin/.gitconfig-tifin
+[includeIf "gitdir:~/Projects/clients/tifin/"]
+	path = ~/Projects/clients/tifin/.gitconfig-tifin
 
-[includeIf "gitdir:~/Documents/clients/criterian/"]
-    path = ~/Documents/clients/criterian/.gitconfig-criterian
+[includeIf "gitdir:~/Projects/clients/criterian/"]
+    path = ~/Projects/clients/criterian/.gitconfig-criterian
 

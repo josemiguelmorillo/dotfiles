@@ -19,7 +19,7 @@ set smartindent                    " Automatically insert indents in code
 " === Usability Enhancements ===
 set scrolloff=5                    " Keep 5 lines visible above/below the cursor when scrolling
 set nowrap                         " Do not wrap long lines
-set clipboard=unnamedplus          " Use system clipboard for all operations
+" set clipboard=unnamedplus          " Use system clipboard for all operations
 
 " === Python-Specific Settings ===
 autocmd FileType python setlocal tabstop=4 shiftwidth=4 expandtab
