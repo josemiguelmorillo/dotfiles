@@ -11,7 +11,6 @@
     orphan = "!git branch -vv | awk '/: gone]/{print $1}'"
     cleanup = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -d"
 
-
     # Quality-of-life aliases
     st = status
     ci = commit
@@ -19,6 +18,10 @@
     br = branch
     lg = log --oneline --graph --decorate --all
     last = log -1 HEAD
+
+    # Custom alias: add -u, copy diff and commit
+    cdiff = "!f() { git add -u && git diff --staged | pbcopy && git commit \"$@\"; }; f"
+
 
 [includeIf "gitdir:~/Projects/clients/tifin/"]
 	path = ~/Projects/clients/tifin/.gitconfig-tifin
