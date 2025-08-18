@@ -1,26 +1,98 @@
-set nocompatible
+" ============================
+" Basic & Leader
+" ============================
+set nocompatible                 " Use Vim defaults, not vi compatible mode
+let mapleader = ","              " Leader key
 
-syntax enable
+" ============================
+" UI & Editing Experience
+" ============================
+set number                       " Show line numbers
+set cursorline                   " Highlight current line
+set nowrap                       " Do not wrap long lines
+set scrolloff=8                  " Keep 8 lines visible above/below cursor
+set sidescrolloff=8              " Keep context when scrolling horizontally
 
-filetype plugin on
+" Show invisible characters (helps spot tabs/trailing spaces)
+set list
+set listchars=tab:▸\ ,trail:·
 
-set path+=**
-set wildmenu
-set wildmode=longest:full,full
+" ============================
+" Filetypes, Syntax & Indent
+" ============================
+syntax enable                    " Syntax highlighting
+filetype plugin indent on        " Filetype detection, plugins, and indentation
 
-set number
+" Python-specific indentation
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 expandtab
 
-" --- Generar tags desde Vim ---
-set tags=./tags;/
+" ============================
+" Completion & Wildmenu
+" ============================
+set wildmenu                     " Enhanced command-line completion
+set wildmode=longest:full,full   " Completion behavior
+set completeopt=menu,menuone,noselect  " Better popup completion UX
+
+" ============================
+" Search
+" ============================
+set ignorecase                   " Case-insensitive search...
+set smartcase                    " ...unless the search has uppercase
+set incsearch                    " Show matches as you type
+set hlsearch                     " Highlight matches
+
+" Clear search highlight quickly
+nnoremap <leader><space> :nohlsearch<CR>
+
+" ============================
+" Paths, Files & Tags
+" ============================
+set path+=**                     " Search subdirs with gf and friends
+set tags=./tags;/                " Use tags file, stopping at project root
+
+" Generate tags for the project (requires ctags installed)
 command! MakeTags !ctags -R .
 
-nnoremap <leader>t :MakeTags<CR>
+" ============================
+" Quickfix Convenience
+" ============================
+nnoremap <silent> <leader>q :cclose<CR>  " Close quickfix window
 
-" Edit vimrc
-nnoremap <leader>ev :edit $MYVIMRC<CR>
+" ============================
+" NetRW (Built-in File Explorer)
+" ============================
+" Open current directory in a vertical split
+nnoremap <silent> <leader>e :Vex .<CR>
 
-" Source vimrc (reload)
-nnoremap <leader>sv :source $MYVIMRC<CR>
+" Optional NetRW quality-of-life (safe defaults)
+let g:netrw_banner = 0           " Hide banner
+let g:netrw_liststyle = 3        " Tree-style view
+let g:netrw_browse_split = 4     " Open in prior window
+let g:netrw_winsize = 25         " Use 25% width
 
-" Busca la palabra bajo el cursor en todo el proyecto
-nnoremap <leader>f :vimgrep /<C-r><C-w>/ ./**/*.py<CR>:copen<CR>
+" ============================
+" Mappings: Insert Mode
+" ============================
+" Fast escape from insert mode
+inoremap jk <Esc>
+
+" ============================
+" Mappings: Normal Mode
+" ============================
+" Build ctags
+nnoremap <silent> <leader>t :MakeTags<CR>
+
+" Edit and source vimrc
+nnoremap <silent> <leader>ev :edit $MYVIMRC<CR>
+nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
+
+" Search word under cursor across the project (Python files)
+" Uses vimgrep to populate quickfix list, then opens it
+nnoremap <silent> <leader>f :vimgrep /<C-r><C-w>/ **/*.py<CR>:copen<CR>
+
+" ============================
+" Run Current Python File
+" ============================
+" Save the file and run with python3
+nnoremap <silent> <leader>r :w<CR>:!python3 %<CR>
+
