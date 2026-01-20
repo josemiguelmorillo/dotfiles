@@ -122,3 +122,6 @@ export CHROME_EXECUTABLE="/Applications/Google Chrome Dev.app/Contents/MacOS/Goo
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/josemiguelmorillo/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+#
+eval "$(zoxide init zsh)"
+
