@@ -18,6 +18,7 @@
     br = branch
     lg = log --oneline --graph --decorate --all
     last = log -1 HEAD
+    pltf = pull -t -f
 
     # Custom alias: add -u, copy diff and commit
     cdiff = "!f() { git add -u && git diff --staged | pbcopy && git commit \"$@\"; }; f"
