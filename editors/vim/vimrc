@@ -62,13 +62,31 @@ nnoremap <silent> <leader>q :cclose<CR>  " Close quickfix window
 " NetRW (Built-in File Explorer)
 " ============================
 " Open current directory in a vertical split
-nnoremap <silent> <leader>e :Vex .<CR>
+function! ToggleNetrw()
+    " Busca cualquier ventana con netrw abierto
+    for w in range(1, winnr('$'))
+        let buf = winbufnr(w)
+        if getbufvar(buf, '&filetype') ==# 'netrw'
+            execute w . 'wincmd c'
+            return
+        endif
+    endfor
+
+    " Si no existe, lo abrimos
+    Lexplore
+endfunction
+
+nnoremap <silent> <leader>e :call ToggleNetrw()<CR>
 
 " Optional NetRW quality-of-life (safe defaults)
 let g:netrw_banner = 0           " Hide banner
 let g:netrw_liststyle = 3        " Tree-style view
 let g:netrw_browse_split = 4     " Open in prior window
 let g:netrw_winsize = 25         " Use 25% width
+let g:netrw_altv = 1             " usa la ventana “alternativa” (la no-netrw)
+let g:netrw_keepdir = 0          " opcional: no cambies el cwd al entrar en netrw
+let g:netrw_fastbrowse = 0       " opcional: más fiable para refrescos
+let g:netrw_hide = 1             " hace que netrw “se esconda” al abrir un fichero
 
 " ============================
 " Mappings: Insert Mode
