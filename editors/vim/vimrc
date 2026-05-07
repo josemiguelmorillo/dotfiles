@@ -17,6 +17,21 @@ set sidescrolloff=8              " Keep context when scrolling horizontally
 set list
 set listchars=tab:▸\ ,trail:·
 
+" Optional quality-of-life
+set hidden                       " Allow switching buffers without saving
+set splitright                   " Vertical splits open to the right
+set splitbelow                   " Horizontal splits open below
+
+" Persistent undo if supported
+if has('persistent_undo')
+    set undofile
+endif
+
+" Use system clipboard if available
+" if has('clipboard')
+"     set clipboard=unnamedplus
+" endif
+
 " ============================
 " Filetypes, Syntax & Indent
 " ============================
@@ -24,7 +39,10 @@ syntax enable                    " Syntax highlighting
 filetype plugin indent on        " Filetype detection, plugins, and indentation
 
 " Python-specific indentation
-autocmd FileType python setlocal tabstop=4 shiftwidth=4 expandtab
+augroup my_filetypes
+    autocmd!
+    autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+augroup END
 
 " ============================
 " Completion & Wildmenu
@@ -51,7 +69,7 @@ set path+=**                     " Search subdirs with gf and friends
 set tags=./tags;/                " Use tags file, stopping at project root
 
 " Generate tags for the project (requires ctags installed)
-command! MakeTags !ctags -R .
+command! MakeTags execute '!ctags -R .'
 
 " ============================
 " Quickfix Convenience
@@ -61,9 +79,8 @@ nnoremap <silent> <leader>q :cclose<CR>  " Close quickfix window
 " ============================
 " NetRW (Built-in File Explorer)
 " ============================
-" Open current directory in a vertical split
+" Toggle netrw explorer in a vertical split
 function! ToggleNetrw()
-    " Busca cualquier ventana con netrw abierto
     for w in range(1, winnr('$'))
         let buf = winbufnr(w)
         if getbufvar(buf, '&filetype') ==# 'netrw'
@@ -72,7 +89,6 @@ function! ToggleNetrw()
         endif
     endfor
 
-    " Si no existe, lo abrimos
     Lexplore
 endfunction
 
@@ -83,10 +99,10 @@ let g:netrw_banner = 0           " Hide banner
 let g:netrw_liststyle = 3        " Tree-style view
 let g:netrw_browse_split = 4     " Open in prior window
 let g:netrw_winsize = 25         " Use 25% width
-let g:netrw_altv = 1             " usa la ventana “alternativa” (la no-netrw)
-let g:netrw_keepdir = 0          " opcional: no cambies el cwd al entrar en netrw
-let g:netrw_fastbrowse = 0       " opcional: más fiable para refrescos
-let g:netrw_hide = 1             " hace que netrw “se esconda” al abrir un fichero
+let g:netrw_altv = 1             " Use the alternate (non-netrw) window
+let g:netrw_keepdir = 0          " Do not keep cwd fixed when browsing
+let g:netrw_fastbrowse = 0       " More reliable refresh behavior
+let g:netrw_hide = 1             " Hide explorer after opening a file
 
 " ============================
 " Mappings: Insert Mode
@@ -105,12 +121,17 @@ nnoremap <silent> <leader>ev :edit $MYVIMRC<CR>
 nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 
 " Search word under cursor across the project (Python files)
-" Uses vimgrep to populate quickfix list, then opens it
-nnoremap <silent> <leader>f :vimgrep /<C-r><C-w>/ **/*.py<CR>:copen<CR>
+" Populates quickfix list, then opens it
+nnoremap <silent> <leader>f :execute 'vimgrep /\V\<'.escape(expand('<cword>'), '\').'\>/gj **/*.py' \| copen<CR>
+
+" Search a literal string across the project
+nnoremap <silent> <leader>g :<C-u>let q = input('Buscar: ')<Bar>if q !=# ''<Bar>execute 'vimgrep /\V' . escape(q, '\/') . '/gj **/*'<Bar>copen<Bar>endif<CR>
+
+
 
 " ============================
 " Run Current Python File
 " ============================
 " Save the file and run with python3
-nnoremap <silent> <leader>r :w<CR>:!python3 %<CR>
+nnoremap <silent> <leader>r :write<CR>:execute '!python3 ' . shellescape(expand('%:p'))<CR>
 

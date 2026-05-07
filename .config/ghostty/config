@@ -1,6 +1,5 @@
 theme=catppuccin-latte
 keybind=ctrl+shift+w=close_window
 confirm-close-surface=false
-working-directory=/Users/josemiguelmorillo/Documents/clients/tifin
 cursor-style=block
 font-size=15

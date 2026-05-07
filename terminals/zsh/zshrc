@@ -113,11 +113,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-eval "$(pyenv init -)"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export CHROME_EXECUTABLE="/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev"
+
+export CODEX_HOME="$HOME/.codex"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/josemiguelmorillo/.rd/bin:$PATH"
@@ -125,3 +124,6 @@ export PATH="/Users/josemiguelmorillo/.rd/bin:$PATH"
 #
 eval "$(zoxide init zsh)"
 
+if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
+    source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
+fi
