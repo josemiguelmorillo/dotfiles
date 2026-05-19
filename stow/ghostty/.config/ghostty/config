@@ -1,0 +1,5 @@
+theme=catppuccin-latte
+keybind=ctrl+shift+w=close_window
+confirm-close-surface=false
+cursor-style=block
+font-size=15

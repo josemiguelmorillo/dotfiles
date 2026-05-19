@@ -1,9 +1,1 @@
---languages=Python
---exclude=.git
---exclude=.idea
---exclude=.cache
---exclude=.mypy_cache
---exclude=.pytest_cache
---exclude=.ruff_cache
---exclude=__pycache__
---exclude=*.pyc
+../../stow/ctags/.ctags

@@ -1,0 +1,9 @@
+[user]
+    name = Jose Miguel Morillo
+    email = josemiguel.morillo@tifin.com
+    useConfigOnly = true
+
+[init]
+	defaultBranch = main
+
+

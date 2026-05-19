@@ -1,0 +1,36 @@
+[user]
+    name = José Miguel Morillo
+    email = josemiguel.morillo@icloud.com
+
+[core]
+    editor = vim
+
+[alias]
+	# Check current profile
+	whoami = "!git config --show-origin user.name && git config --show-origin user.email"
+	orphan = "!git branch -vv | awk '/: gone]/{print $1}'"
+	cleanup = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -d"
+
+	# Quality-of-life aliases
+	st = status
+	ci = commit
+	co = checkout
+	br = branch
+	lg = log --oneline --graph --decorate --all
+	last = log -1 HEAD
+	pltf = pull -t -f
+	ptf = push --tags -f
+	fa = fetch -ap --tags -f
+
+	# Custom alias: add -u, copy diff and commit
+	cdiff = "!f() { git add -u && git diff --staged | pbcopy && git commit \"$@\"; }; f"
+
+
+[includeIf "gitdir:~/Projects/clients/tifin/"]
+	path = ~/.gitconfig-tifin
+
+[includeIf "gitdir:~/Projects/clients/criterian/"]
+	path = ~/.gitconfig-criterian
+
+[includeIf "gitdir:~/.codex/worktrees"]
+	path = ~/.gitconfig-tifin
