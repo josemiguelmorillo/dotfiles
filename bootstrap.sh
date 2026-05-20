@@ -7,6 +7,19 @@ BREWFILE="$DOTFILES_DIR/Brewfile"
 STOW_DIR="$DOTFILES_DIR/stow"
 PACKAGES=(ctags ghostty git ssh vim zsh)
 
+remove_matching_legacy_symlink() {
+  local target_path="$1"
+  local source_path="$2"
+
+  if [[ ! -L "$target_path" ]]; then
+    return
+  fi
+
+  if cmp -s "$target_path" "$source_path"; then
+    rm "$target_path"
+  fi
+}
+
 if ! command -v brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
@@ -26,6 +39,16 @@ fi
 
 mkdir -p "$HOME/.config/ghostty" "$HOME/.nvm" "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
+
+remove_matching_legacy_symlink "$HOME/.ctags" "$STOW_DIR/ctags/.ctags"
+remove_matching_legacy_symlink "$HOME/.config/ghostty/config" "$STOW_DIR/ghostty/.config/ghostty/config"
+remove_matching_legacy_symlink "$HOME/.gitconfig" "$STOW_DIR/git/.gitconfig"
+remove_matching_legacy_symlink "$HOME/.gitconfig-criterian" "$STOW_DIR/git/.gitconfig-criterian"
+remove_matching_legacy_symlink "$HOME/.gitconfig-tifin" "$STOW_DIR/git/.gitconfig-tifin"
+remove_matching_legacy_symlink "$HOME/.gitignore" "$STOW_DIR/git/.gitignore"
+remove_matching_legacy_symlink "$HOME/.ssh/config" "$STOW_DIR/ssh/.ssh/config"
+remove_matching_legacy_symlink "$HOME/.vimrc" "$STOW_DIR/vim/.vimrc"
+remove_matching_legacy_symlink "$HOME/.zshrc" "$STOW_DIR/zsh/.zshrc"
 
 stow --dir="$STOW_DIR" --target="$HOME" --restow "${PACKAGES[@]}"
 
