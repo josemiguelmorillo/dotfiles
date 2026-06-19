@@ -7,7 +7,7 @@ let mapleader = ","              " Leader key
 " ============================
 " UI & Editing Experience
 " ============================
-set number                       " Show line numbers
+set number relativenumber        " Absolute on current line, relative elsewhere
 set cursorline                   " Highlight current line
 set nowrap                       " Do not wrap long lines
 set scrolloff=8                  " Keep 8 lines visible above/below cursor
@@ -22,8 +22,10 @@ set listchars=tab:▸\ ,trail:·
 
 " Optional quality-of-life
 set hidden                       " Allow switching buffers without saving
+set autoread                     " Reload files changed outside Vim (git checkout, etc.)
 set splitright                   " Vertical splits open to the right
 set splitbelow                   " Horizontal splits open below
+set backspace=indent,eol,start   " Sane backspace in insert mode
 set timeoutlen=200               " Reduce delay for key sequences (e.g. jk escape)
 
 " Persistent undo with centralized directory
@@ -50,11 +52,6 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-
-augroup my_filetypes
-    autocmd!
-    autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-augroup END
 
 " Suppress auto comment continuation on o/O
 augroup my_formatopts
@@ -90,6 +87,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 " Paths, Files & Tags
 " ============================
 set path+=**                     " Search subdirs with gf and friends
+set wildignore+=**/.git/**,**/node_modules/**,**/__pycache__/**,**/dist/**,**/.DS_Store
 set tags=./tags;/                " Use tags file, stopping at project root
 
 " Generate tags for the project (requires ctags installed)
@@ -126,7 +124,7 @@ let g:netrw_winsize = 25         " Use 25% width
 let g:netrw_altv = 1             " Use the alternate (non-netrw) window
 let g:netrw_keepdir = 0          " Do not keep cwd fixed when browsing
 let g:netrw_fastbrowse = 0       " More reliable refresh behavior
-let g:netrw_hide = 1             " Hide explorer after opening a file
+let g:netrw_hide = 0             " Show all files including dotfiles
 
 " ============================
 " Mappings: Insert Mode
@@ -143,13 +141,21 @@ nnoremap <silent> <leader>t :MakeTags<CR>
 nnoremap <silent> <leader>ev :edit $MYVIMRC<CR>
 nnoremap <silent> <leader>sv :source $MYVIMRC<CR>
 
-" Search word under cursor across the project
-nnoremap <silent> <leader>f :execute 'vimgrep /\V\<'.escape(expand('<cword>'), '\').'\>/gj **/*' \| copen<CR>
+" Returns git root of the current file, or its directory as fallback
+function! ProjectRoot()
+    let root = trim(system('git -C ' . shellescape(expand('%:p:h')) . ' rev-parse --show-toplevel 2>/dev/null'))
+    return root !=# '' ? root : expand('%:p:h')
+endfunction
+
+" Search word under cursor across the project (uses rg via grepprg)
+nnoremap <silent> <leader>f :execute 'grep! ' . shellescape(expand('<cword>')) . ' ' . shellescape(ProjectRoot())<CR>:copen<CR>
 
 " Search a literal string across the project
-nnoremap <silent> <leader>g :<C-u>let q = input('Search: ')<Bar>if q !=# ''<Bar>execute 'grep! ' . shellescape(q)<Bar>copen<Bar>endif<CR>
+nnoremap <silent> <leader>g :<C-u>let q = input('Search: ')<Bar>if q !=# ''<Bar>execute 'grep! ' . shellescape(q) . ' ' . shellescape(ProjectRoot())<Bar>copen<Bar>endif<CR>
 
 " ============================
 " Run Current Python File
 " ============================
 nnoremap <silent> <leader>r :write<CR>:execute '!python3 ' . shellescape(expand('%:p'))<CR>
+
+nnoremap <leader>cp :let @+ = expand('%:p')<CR>:echo "Copied path!"<CR>

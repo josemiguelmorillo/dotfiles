@@ -121,7 +121,7 @@ export CHROME_EXECUTABLE="/Applications/Google Chrome Dev.app/Contents/MacOS/Goo
 export CODEX_HOME="$HOME/.codex"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="$HOME/.rd/bin:$PATH"
+export PATH="/Users/josemiguelmorillo/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 #
 if command -v zoxide >/dev/null 2>&1; then
@@ -132,3 +132,7 @@ if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
     source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
 fi
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/josemiguelmorillo/.local/bin:$PATH"
