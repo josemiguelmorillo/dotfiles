@@ -128,6 +128,74 @@ if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
 fi
 
+# tmux helpers
+_tmux_project_dir() {
+    git rev-parse --show-toplevel 2>/dev/null || pwd
+}
+
+_tmux_project_session_name() {
+    local project_dir
+    local project_name
+
+    project_dir="$(_tmux_project_dir)"
+    project_name="${project_dir:t}"
+    print -r -- "${project_name//[^[:alnum:]_.-]/_}"
+}
+
+_tmux_require_fzf() {
+    local helper_name="$1"
+
+    if ! command -v fzf >/dev/null 2>&1; then
+        print -u2 "$helper_name requires fzf. Install it with: brew install fzf"
+        return 1
+    fi
+}
+
+t() {
+    local project_dir
+    local session_name
+
+    project_dir="$(_tmux_project_dir)"
+    session_name="$(_tmux_project_session_name)"
+
+    if [[ -n "$TMUX" ]]; then
+        tmux has-session -t "$session_name" 2>/dev/null || tmux new-session -d -s "$session_name" -c "$project_dir"
+        tmux switch-client -t "$session_name"
+        return
+    fi
+
+    tmux new-session -A -s "$session_name" -c "$project_dir"
+}
+
+ta() {
+    _tmux_require_fzf ta || return
+
+    local session_name
+    session_name="$(tmux list-sessions -F '#S' 2>/dev/null | fzf --prompt='tmux session> ')" || return
+    [[ -z "$session_name" ]] && return
+
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t "$session_name"
+        return
+    fi
+
+    tmux attach-session -t "$session_name"
+}
+
+tk() {
+    _tmux_require_fzf tk || return
+
+    local session_name
+    session_name="$(tmux list-sessions -F '#S' 2>/dev/null | fzf --prompt='kill tmux session> ')" || return
+    [[ -z "$session_name" ]] && return
+
+    tmux kill-session -t "$session_name"
+}
+
+tl() {
+    tmux list-sessions
+}
+
 if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
     source "$GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration"
 fi

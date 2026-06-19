@@ -5,7 +5,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BREWFILE="$DOTFILES_DIR/Brewfile"
 STOW_DIR="$DOTFILES_DIR/stow"
-PACKAGES=(ctags ghostty git ssh vim zsh)
+PACKAGES=(ctags ghostty git ssh tmux vim zsh)
 
 remove_matching_legacy_symlink() {
   local target_path="$1"
@@ -47,6 +47,7 @@ remove_matching_legacy_symlink "$HOME/.gitconfig-criterian" "$STOW_DIR/git/.gitc
 remove_matching_legacy_symlink "$HOME/.gitconfig-tifin" "$STOW_DIR/git/.gitconfig-tifin"
 remove_matching_legacy_symlink "$HOME/.gitignore" "$STOW_DIR/git/.gitignore"
 remove_matching_legacy_symlink "$HOME/.ssh/config" "$STOW_DIR/ssh/.ssh/config"
+remove_matching_legacy_symlink "$HOME/.tmux.conf" "$STOW_DIR/tmux/.tmux.conf"
 remove_matching_legacy_symlink "$HOME/.vimrc" "$STOW_DIR/vim/.vimrc"
 remove_matching_legacy_symlink "$HOME/.zshrc" "$STOW_DIR/zsh/.zshrc"
 

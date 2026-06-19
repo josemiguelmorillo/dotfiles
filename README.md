@@ -23,9 +23,17 @@ Managed files:
 - `~/.gitconfig-criterian`
 - `~/.gitignore`
 - `~/.ssh/config`
+- `~/.tmux.conf`
 - `~/.vimrc`
 - `~/.ctags`
 - `~/.config/ghostty/config`
+
+Shell helpers:
+
+- `t` starts or attaches to one tmux session for the current project.
+- `ta` selects an existing tmux session with `fzf`.
+- `tk` selects an existing tmux session with `fzf` and kills it.
+- `tl` lists tmux sessions.
 
 Notes for a new machine:
 
