@@ -59,6 +59,12 @@ augroup my_formatopts
     autocmd FileType * setlocal formatoptions-=o
 augroup END
 
+" Soft-wrap long Markdown lines without changing file contents
+augroup my_markdown
+    autocmd!
+    autocmd FileType markdown setlocal wrap linebreak breakindent
+augroup END
+
 " ============================
 " Completion & Wildmenu
 " ============================
