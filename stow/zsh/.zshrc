@@ -236,3 +236,21 @@ aid() {
 
     printf '%s\n' "$*" | command fabric-ai --stream --pattern detailed_ai
 }
+
+casual() {
+    if [ "$#" -eq 0 ]; then
+        echo 'Usage: casual "your text"' >&2
+        return 1
+    fi
+
+    printf '%s\n' "$*" | command fabric-ai --stream --pattern edit_text_casual | tee >(pbcopy)
+}
+
+neutral() {
+    if [ "$#" -eq 0 ]; then
+        echo 'Usage: neutral "your text"' >&2
+        return 1
+    fi
+
+    printf '%s\n' "$*" | command fabric-ai --stream --pattern edit_text_neutral | tee >(pbcopy)
+}
