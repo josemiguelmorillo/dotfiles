@@ -142,13 +142,24 @@ _tmux_project_session_name() {
     print -r -- "${project_name//[^[:alnum:]_.-]/_}"
 }
 
-_tmux_require_fzf() {
+_require_fzf() {
     local helper_name="$1"
 
     if ! command -v fzf >/dev/null 2>&1; then
         print -u2 "$helper_name requires fzf. Install it with: brew install fzf"
         return 1
     fi
+}
+
+# Fuzzy-search shell history and load the selection onto the edit line.
+fh() {
+    _require_fzf fh || return
+
+    local selected
+    selected="$(fc -rl 1 | fzf --no-sort --query="$LBUFFER" | sed -E 's/^[[:space:]]*[0-9]+[[:space:]]+//')" || return
+    [[ -z "$selected" ]] && return
+
+    print -z -- "$selected"
 }
 
 t() {
@@ -168,7 +179,7 @@ t() {
 }
 
 ta() {
-    _tmux_require_fzf ta || return
+    _require_fzf ta || return
 
     local session_name
     session_name="$(tmux list-sessions -F '#S' 2>/dev/null | fzf --prompt='tmux session> ')" || return
@@ -183,7 +194,7 @@ ta() {
 }
 
 tk() {
-    _tmux_require_fzf tk || return
+    _require_fzf tk || return
 
     local session_name
     session_name="$(tmux list-sessions -F '#S' 2>/dev/null | fzf --prompt='kill tmux session> ')" || return
