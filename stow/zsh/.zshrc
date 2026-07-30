@@ -215,3 +215,24 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Added by Antigravity CLI installer
 export PATH="/Users/josemiguelmorillo/.local/bin:$PATH"
+alias fabric='fabric-ai'
+export CUSTOM_PATTERNS_DIRECTORY="$HOME/.config/fabric/custom-patterns"
+
+
+ai() {
+    if [ "$#" -eq 0 ]; then
+        echo 'Usage: fabric "your question"' >&2
+        return 1
+    fi
+
+    printf '%s\n' "$*" | command fabric-ai --stream --pattern ai
+}
+
+aid() {
+    if [ "$#" -eq 0 ]; then
+        echo 'Usage: fabric "your question"' >&2
+        return 1
+    fi
+
+    printf '%s\n' "$*" | command fabric-ai --stream --pattern detailed_ai
+}

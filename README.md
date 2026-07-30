@@ -27,6 +27,7 @@ Managed files:
 - `~/.vimrc`
 - `~/.ctags`
 - `~/.config/ghostty/config`
+- `~/.config/fabric/custom-patterns/`
 
 Shell helpers:
 
@@ -34,6 +35,16 @@ Shell helpers:
 - `ta` selects an existing tmux session with `fzf`.
 - `tk` selects an existing tmux session with `fzf` and kills it.
 - `tl` lists tmux sessions.
+
+Fabric patterns:
+
+- Custom patterns live in `stow/fabric/.config/fabric/custom-patterns/`, one
+  directory per pattern with a `system.md` inside.
+- `~/.zshrc` points Fabric at them with `CUSTOM_PATTERNS_DIRECTORY`, so
+  `fabric --updatepatterns` refreshes only the upstream patterns in
+  `~/.config/fabric/patterns` and never touches these.
+- Fabric's `~/.config/fabric/.env` holds API keys and is deliberately not
+  managed here; run `fabric --setup` once per machine.
 
 Notes for a new machine:
 

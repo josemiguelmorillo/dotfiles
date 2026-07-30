@@ -1,3 +1,4 @@
+brew "fabric-ai"
 brew "fzf"
 brew "git"
 brew "libpq"

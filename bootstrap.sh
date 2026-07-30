@@ -5,7 +5,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BREWFILE="$DOTFILES_DIR/Brewfile"
 STOW_DIR="$DOTFILES_DIR/stow"
-PACKAGES=(ctags ghostty git ssh tmux vim zsh)
+PACKAGES=(ctags fabric ghostty git ssh tmux vim zsh)
 
 remove_matching_legacy_symlink() {
   local target_path="$1"
@@ -37,7 +37,7 @@ if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-mkdir -p "$HOME/.config/ghostty" "$HOME/.nvm" "$HOME/.ssh"
+mkdir -p "$HOME/.config/fabric" "$HOME/.config/ghostty" "$HOME/.nvm" "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
 
 remove_matching_legacy_symlink "$HOME/.ctags" "$STOW_DIR/ctags/.ctags"
