@@ -9,14 +9,14 @@
 	# Check current profile
 	whoami = "!git config --show-origin user.name && git config --show-origin user.email"
 	orphan = "!git branch -vv | awk '/: gone]/{print $1}'"
-	cleanup = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -d"
+	cleanup = !git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -D
 
 	# Quality-of-life aliases
 	st = status
 	ci = commit
 	co = checkout
 	br = branch
-	lg = log --oneline --graph --decorate --all
+	lg = log --oneline --graph --decorate -20
 	last = log -1 HEAD
 	pltf = pull -t -f
 	ptf = push --tags -f
@@ -24,6 +24,11 @@
 
 	# Custom alias: add -u, copy diff and commit
 	cdiff = "!f() { git add -u && git diff --staged | pbcopy && git commit \"$@\"; }; f"
+	gone = !git branch -vv | awk '/: gone]/{print $1}'
+	today = !git log --since=midnight --oneline --author=\"$(git config user.name)\"
+	team = log --oneline --graph --decorate --all --since=2.weeks
+	who = shortlog -sn --since=1.month
+	stale = !git for-each-ref --sort=committerdate refs/remotes --format='%(committerdate:short) %(refname:short)' | awk -v d=\"$(date -v-30d +%F)\" '$1 < d'
 
 
 [includeIf "gitdir:~/Projects/clients/tifin/"]
@@ -34,3 +39,6 @@
 
 [includeIf "gitdir:~/.codex/worktrees"]
 	path = ~/.gitconfig-tifin
+[fetch]
+	prune = true
+	pruneTags = true

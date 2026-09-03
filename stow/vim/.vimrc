@@ -157,7 +157,14 @@ endfunction
 nnoremap <silent> <leader>f :execute 'grep! ' . shellescape(expand('<cword>')) . ' ' . shellescape(ProjectRoot())<CR>:copen<CR>
 
 " Search a literal string across the project
-nnoremap <silent> <leader>g :<C-u>let q = input('Search: ')<Bar>if q !=# ''<Bar>execute 'grep! ' . shellescape(q) . ' ' . shellescape(ProjectRoot())<Bar>copen<Bar>endif<CR>
+function! SearchProject()
+    let q = input('Search: ')
+    if q !=# ''
+        silent! execute 'grep! ' . shellescape(q) . ' ' . shellescape(ProjectRoot())
+        copen
+    endif
+endfunction
+nnoremap <silent> <leader>g :call SearchProject()<CR>
 
 " ============================
 " Run Current Python File

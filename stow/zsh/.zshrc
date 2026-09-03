@@ -212,6 +212,8 @@ if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
 fi
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
+alias gfc='git fa && git cleanup'
+
 
 # Added by Antigravity CLI installer
 export PATH="/Users/josemiguelmorillo/.local/bin:$PATH"
