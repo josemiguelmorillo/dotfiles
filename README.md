@@ -7,7 +7,7 @@ Personal command-line configuration for macOS and Windows Subsystem for Linux.
 Clone the repository and run the platform dispatcher:
 
 ```bash
-git clone https://github.com/josemiguelmorillo/dotfiles.git ~/.dotfiles
+git clone git@github.com:josemiguelmorillo/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./bootstrap.sh
 ```
