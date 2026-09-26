@@ -1,53 +1,60 @@
 # dotfiles
 
-Bootstrap this repo on a new Mac with:
+Personal command-line configuration for macOS and Windows Subsystem for Linux.
+
+## Install
+
+Clone the repository and run the platform dispatcher:
 
 ```bash
-git clone git@github.com:<your-user>/<your-dotfiles-repo>.git ~/.dotfiles
+git clone git@github.com:josemiguelmorillo/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./bootstrap.sh
 ```
 
-What `bootstrap.sh` does:
+`bootstrap.sh` calls `bootstrap-macos.sh` on macOS and `bootstrap-wsl.sh` on
+WSL. Other Linux environments stop without making changes.
 
-- installs Homebrew if needed
-- installs the command-line packages declared in `Brewfile`
-- installs Oh My Zsh if it is missing
-- stows the managed dotfiles from `stow/` into `$HOME`
+### macOS
 
-Managed files:
+The macOS installer uses Homebrew and `Brewfile`, installs Oh My Zsh, and
+links the common and macOS packages with GNU Stow.
 
-- `~/.zshrc`
-- `~/.gitconfig`
-- `~/.gitconfig-tifin`
-- `~/.gitconfig-criterian`
-- `~/.gitignore`
-- `~/.ssh/config`
-- `~/.tmux.conf`
-- `~/.vimrc`
-- `~/.ctags`
-- `~/.config/ghostty/config`
-- `~/.config/fabric/custom-patterns/`
+### WSL
 
-Shell helpers:
+The WSL installer:
 
-- `t` starts or attaches to one tmux session for the current project.
-- `ta` selects an existing tmux session with `fzf`.
-- `tk` selects an existing tmux session with `fzf` and kills it.
-- `tl` lists tmux sessions.
+- installs command-line dependencies with `apt`;
+- installs Oh My Zsh, uv, and fnm when missing;
+- preserves the current Git settings, including authentication, in `~/.gitconfig.local`;
+- moves conflicting real files to `~/.dotfiles-backup/<timestamp>/`;
+- links the common and WSL packages with GNU Stow.
 
-Fabric patterns:
+Run only the linking and backup phase during development with:
 
-- Custom patterns live in `stow/fabric/.config/fabric/custom-patterns/`, one
-  directory per pattern with a `system.md` inside.
-- `~/.zshrc` points Fabric at them with `CUSTOM_PATTERNS_DIRECTORY`, so
-  `fabric --updatepatterns` refreshes only the upstream patterns in
-  `~/.config/fabric/patterns` and never touches these.
-- Fabric's `~/.config/fabric/.env` holds API keys and is deliberately not
-  managed here; run `fabric --setup` once per machine.
+```bash
+DOTFILES_SKIP_INSTALL=1 ./bootstrap-wsl.sh
+```
 
-Notes for a new machine:
+## Layout
 
-- Add the SSH keys referenced by `~/.ssh/config` before using the Git host aliases.
-- Install optional GUI apps separately if you use them: Ghostty, Rancher Desktop, and Google Chrome Dev.
-- The Git conditional includes assume your client repos live under `~/Projects/clients/...`.
+```text
+stow/
+├── common/  # Vim, ctags, and Fabric patterns
+├── macos/   # macOS Git, SSH, tmux, Zsh, and Ghostty settings
+└── wsl/     # WSL Git, tmux, and Zsh settings
+```
+
+Each child of these directories is a GNU Stow package. Managed files include
+`.zshrc`, `.gitconfig`, `.gitignore`, `.tmux.conf`, `.vimrc`, `.ctags`, SSH and
+Ghostty configuration on macOS, and Fabric custom patterns.
+
+## Machine-specific settings
+
+WSL keeps existing Git settings in `~/.gitconfig.local`, which is included by
+the managed `.gitconfig`. API keys and other secrets remain outside this
+repository.
+
+The macOS Git conditional includes expect client repositories below
+`~/Projects/clients/`. Add the SSH keys referenced by the macOS SSH config
+before using its host aliases.
