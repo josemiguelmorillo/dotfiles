@@ -65,8 +65,9 @@ done
 
 stow --dir="$COMMON_STOW_DIR" --target="$HOME" --restow "${COMMON_PACKAGES[@]}"
 stow --dir="$WSL_STOW_DIR" --target="$HOME" --restow "${WSL_PACKAGES[@]}"
+"$DOTFILES_DIR/scripts/enable-zsh-on-wsl.sh"
 
 if [[ -d "$BACKUP_DIR" ]]; then
   printf 'Previous files backed up in %s\n' "$BACKUP_DIR"
 fi
-printf 'WSL bootstrap complete. Start the configured shell with: exec zsh\n'
+printf 'WSL bootstrap complete. New interactive terminals will start Zsh.\n'
