@@ -29,6 +29,7 @@ The WSL installer:
 - preserves the current Git settings, including authentication, in `~/.gitconfig.local`;
 - moves conflicting real files to `~/.dotfiles-backup/<timestamp>/`;
 - links the common and WSL packages with GNU Stow.
+- configures interactive Bash terminals to start Zsh while keeping Bash scripts unchanged.
 
 Run only the linking and backup phase during development with:
 
