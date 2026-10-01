@@ -1,3 +1,4 @@
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -105,15 +106,40 @@ source $ZSH/oh-my-zsh.sh
 
 # Created by `pipx` on 2024-11-11 11:02:53
 export PATH="$PATH:$HOME/.local/bin"
+# export PYENV_ROOT="$HOME/.pyenv"
+# if command -v pyenv >/dev/null 2>&1; then
+#     [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+#     eval "$(pyenv init -)"
+# fi
+#
 export PYENV_ROOT="$HOME/.pyenv"
-if command -v pyenv >/dev/null 2>&1; then
-    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
-fi
+[[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+nvm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  nvm "$@"
+}
+
+node() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  node "$@"
+}
+
+npm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  npm "$@"
+}
+
+npx() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  npx "$@"
+}
 
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export CHROME_EXECUTABLE="/Applications/Google Chrome Dev.app/Contents/MacOS/Google Chrome Dev"
@@ -256,3 +282,8 @@ neutral() {
 
     printf '%s\n' "$*" | command fabric-ai --stream --pattern edit_text_neutral | tee >(pbcopy)
 }
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/josemiguelmorillo/.lmstudio/bin"
+# End of LM Studio CLI section
+#

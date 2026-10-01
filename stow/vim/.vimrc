@@ -82,7 +82,7 @@ set hlsearch                     " Highlight matches
 
 " Use ripgrep for :grep if available
 if executable('rg')
-    set grepprg=rg\ --vimgrep\ --smart-case
+    set grepprg=rg\ --vimgrep\ --smart-case\ --glob\ '!tags'
     set grepformat=%f:%l:%c:%m
 endif
 
