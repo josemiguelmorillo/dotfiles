@@ -78,5 +78,21 @@ before using its host aliases.
   managed here; run `fabric --setup` once per machine.
 
 Install optional macOS GUI apps separately: Ghostty, Kitty, Rancher Desktop,
-and Google Chrome Dev. If Kitty already has a config, back it up and remove
-it before running bootstrap so Stow can link `~/.config/kitty/kitty.conf`.
+and Google Chrome Dev. Bootstrap backs up existing Kitty configuration before
+linking `~/.config/kitty/kitty.conf`.
+
+## Additional managed configuration
+
+- macOS: AeroSpace configuration and its window-management helper script, plus
+  `~/.config/git/ignore`.
+- Common: htop preferences and GitLab CLI aliases. GitLab credentials and
+  recovery files remain local.
+- The ctags package also links `~/.config/ctags/exclude.ctags`.
+- All Fabric custom patterns, including `emoji_title`, live under
+  `stow/common/fabric/`.
+
+The macOS bootstrap repairs legacy symlinks into `.dotfiles`. Conflicting configuration
+files are backed up under `~/.dotfiles-backup/` before Stow links them.
+Use `DOTFILES_SKIP_INSTALL=1 ./bootstrap-macos.sh` to run only the linking phase.
+Fish installer paths, Flutter signing settings, OpenCode generated files,
+credentials, caches, and application state remain machine-specific.
