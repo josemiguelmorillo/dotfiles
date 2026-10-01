@@ -5,7 +5,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BREWFILE="$DOTFILES_DIR/Brewfile"
 STOW_DIR="$DOTFILES_DIR/stow"
-PACKAGES=(ctags fabric ghostty git ssh tmux vim zsh)
+PACKAGES=(ctags fabric ghostty git kitty ssh tmux vim zsh)
 
 remove_matching_legacy_symlink() {
   local target_path="$1"
@@ -37,11 +37,12 @@ if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-mkdir -p "$HOME/.config/fabric" "$HOME/.config/ghostty" "$HOME/.nvm" "$HOME/.ssh"
+mkdir -p "$HOME/.config/fabric" "$HOME/.config/ghostty" "$HOME/.config/kitty" "$HOME/.nvm" "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
 
 remove_matching_legacy_symlink "$HOME/.ctags" "$STOW_DIR/ctags/.ctags"
 remove_matching_legacy_symlink "$HOME/.config/ghostty/config" "$STOW_DIR/ghostty/.config/ghostty/config"
+remove_matching_legacy_symlink "$HOME/.config/kitty/kitty.conf" "$STOW_DIR/kitty/.config/kitty/kitty.conf"
 remove_matching_legacy_symlink "$HOME/.gitconfig" "$STOW_DIR/git/.gitconfig"
 remove_matching_legacy_symlink "$HOME/.gitconfig-criterian" "$STOW_DIR/git/.gitconfig-criterian"
 remove_matching_legacy_symlink "$HOME/.gitconfig-tifin" "$STOW_DIR/git/.gitconfig-tifin"
@@ -60,6 +61,6 @@ Bootstrap complete.
 
 Next steps:
   1. Add your SSH keys to ~/.ssh so the entries in ~/.ssh/config can resolve.
-  2. Install optional GUI apps you use manually (Ghostty, Rancher Desktop, Google Chrome Dev).
+  2. Install optional GUI apps you use manually (Ghostty, Kitty, Rancher Desktop, Google Chrome Dev).
   3. Restart your shell with: exec zsh
 EOF

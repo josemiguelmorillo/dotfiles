@@ -27,6 +27,7 @@ Managed files:
 - `~/.vimrc`
 - `~/.ctags`
 - `~/.config/ghostty/config`
+- `~/.config/kitty/kitty.conf`
 - `~/.config/fabric/custom-patterns/`
 
 Shell helpers:
@@ -49,5 +50,7 @@ Fabric patterns:
 Notes for a new machine:
 
 - Add the SSH keys referenced by `~/.ssh/config` before using the Git host aliases.
-- Install optional GUI apps separately if you use them: Ghostty, Rancher Desktop, and Google Chrome Dev.
+- Install optional GUI apps separately if you use them: Ghostty, Kitty, Rancher Desktop, and Google Chrome Dev.
+- If Kitty already has a config, back it up and remove it before running bootstrap
+  so Stow can link the managed `~/.config/kitty/kitty.conf`.
 - The Git conditional includes assume your client repos live under `~/Projects/clients/...`.
