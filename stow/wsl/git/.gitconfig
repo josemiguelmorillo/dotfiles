@@ -1,0 +1,27 @@
+[include]
+    path = ~/.gitconfig.local
+[core]
+    editor = vim
+    autocrlf = input
+    eol = lf
+    excludesFile = ~/.gitignore
+[init]
+    defaultBranch = main
+[fetch]
+    prune = true
+    pruneTags = true
+[alias]
+    whoami = !git config --show-origin user.name && git config --show-origin user.email
+    st = status
+    ci = commit
+    co = checkout
+    br = branch
+    lg = log --oneline --graph --decorate -20
+    last = log -1 HEAD
+    fa = fetch -ap --tags -f
+    gone = !git branch -vv | awk '/: gone]/{print $1}'
+    cleanup = !git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -D
+    today = !git log --since=midnight --oneline --author="$(git config user.name)"
+    team = log --oneline --graph --decorate --all --since=2.weeks
+    who = shortlog -sn --since=1.month
+    stale = !git for-each-ref --sort=committerdate refs/remotes --format='%(committerdate:short) %(refname:short)' | awk -v d="$(date -d '30 days ago' +%F)" '$1 < d'
